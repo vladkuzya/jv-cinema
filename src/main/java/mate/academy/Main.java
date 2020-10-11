@@ -6,9 +6,11 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
@@ -18,6 +20,8 @@ public class Main {
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static MovieSessionService movieSessionService =
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static UserService userService =
+            (UserService) injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
         Movie movie = new Movie();
@@ -38,5 +42,11 @@ public class Main {
         movieSessionService.add(movieSession);
         movieSessionService.findAvailableSessions(movie.getId(),
                 LocalDate.now()).forEach(System.out::println);
+
+        User bob = new User("bob@gmail.com", "123");
+        User alica = new User("alica@gmail.com", "222");
+        userService.add(bob);
+        userService.add(alica);
+        System.out.println(userService.findByEmail("alica@gmail.com"));
     }
 }
