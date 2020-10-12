@@ -25,7 +25,7 @@ public class HashUtil {
                 hashedPassword.append(String.format(FORMAT_PATTERN, b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can't make a hash for this password");
+            throw new RuntimeException("Can't make a hash for this password", e);
         }
         return hashedPassword.toString();
     }
