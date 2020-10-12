@@ -13,6 +13,7 @@ import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.OrderService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 
@@ -30,6 +31,8 @@ public class Main {
             (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
     private static AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static OrderService orderService =
+            (OrderService) injector.getInstance(OrderService.class);
 
     public static void main(String[] args) throws AuthenticationException {
         Movie movie = new Movie();
@@ -54,13 +57,20 @@ public class Main {
         authenticationService.register("bob@gmail.com", "1111");
         authenticationService.register("alisa@gmail.com", "1111");
         User bob = authenticationService.login("bob@gmail.com", "1111");
+
+        shoppingCartService.addSession(movieSession, bob);
+        ShoppingCart shoppingCartBob = shoppingCartService.getByUser(bob);
+        System.out.println(shoppingCartBob);
+        shoppingCartService.clear(shoppingCartBob);
+        System.out.println(shoppingCartBob);
+
         User alisa = authenticationService.login("alisa@gmail.com", "1111");
         System.out.println(userService.findByEmail("alica@gmail.com"));
 
-        shoppingCartService.addSession(movieSession, bob);
-        ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
-        System.out.println(shoppingCart);
-        shoppingCartService.clear(shoppingCart);
-        System.out.println(shoppingCart);
+        shoppingCartService.addSession(movieSession, alisa);
+        ShoppingCart shoppingCartAlisa = shoppingCartService.getByUser(alisa);
+        orderService.completeOrder(shoppingCartAlisa.getTickets(),
+                shoppingCartAlisa.getUser());
+        System.out.println(orderService.getOrderHistory(shoppingCartAlisa.getUser()));
     }
 }
