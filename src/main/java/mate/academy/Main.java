@@ -53,7 +53,6 @@ public class Main {
         userService.add(alica);
         System.out.println(userService.findByEmail("alica@gmail.com"));
 
-        shoppingCartService.registerNewShoppingCart(bob);
         shoppingCartService.addSession(movieSession, bob);
         ShoppingCart shoppingCart = shoppingCartService.getByUser(bob);
         System.out.println(shoppingCart);
