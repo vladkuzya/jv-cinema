@@ -2,7 +2,6 @@ package mate.academy.dao.impl;
 
 import java.util.List;
 import mate.academy.dao.OrderDao;
-import mate.academy.exceptions.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Order;
 import mate.academy.model.User;
@@ -24,9 +23,6 @@ public class OrderDaoImpl extends AbstractDao<Order> implements OrderDao {
                     + "WHERE o.user = :user", Order.class)
                     .setParameter("user", user)
                     .getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Error retrieving order history for user "
-                    + user.toString(), e);
         }
     }
 }
