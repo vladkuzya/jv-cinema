@@ -16,9 +16,11 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.OrderService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
+import org.apache.log4j.Logger;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
+    private static final Logger logger = Logger.getLogger(Main.class);
     private static MovieService movieService =
             (MovieService) injector.getInstance(MovieService.class);
     private static CinemaHallService cinemaHallService =
@@ -38,13 +40,13 @@ public class Main {
         Movie movie = new Movie();
         movie.setTitle("Untouchable");
         movieService.add(movie);
-        movieService.getAll().forEach(System.out::println);
+        movieService.getAll().forEach(logger::info);
 
         CinemaHall cinemaHall = new CinemaHall();
         cinemaHall.setCapacity(50);
         cinemaHall.setDescription("For adults");
         cinemaHallService.add(cinemaHall);
-        cinemaHallService.getAll().forEach(System.out::println);
+        cinemaHallService.getAll().forEach(logger::info);
 
         MovieSession movieSession = new MovieSession();
         movieSession.setMovie(movie);
@@ -52,7 +54,7 @@ public class Main {
         movieSession.setShowTime(LocalDateTime.now());
         movieSessionService.add(movieSession);
         movieSessionService.findAvailableSessions(movie.getId(),
-                LocalDate.now()).forEach(System.out::println);
+                LocalDate.now()).forEach(logger::info);
 
         authenticationService.register("bob@gmail.com", "1111");
         authenticationService.register("alisa@gmail.com", "1111");
@@ -60,17 +62,17 @@ public class Main {
 
         shoppingCartService.addSession(movieSession, bob);
         ShoppingCart shoppingCartBob = shoppingCartService.getByUser(bob);
-        System.out.println(shoppingCartBob);
+        logger.info(shoppingCartBob);
         shoppingCartService.clear(shoppingCartBob);
-        System.out.println(shoppingCartBob);
+        logger.info(shoppingCartBob);
 
         User alisa = authenticationService.login("alisa@gmail.com", "1111");
-        System.out.println(userService.findByEmail("alica@gmail.com"));
+        logger.info(userService.findByEmail("alica@gmail.com"));
 
         shoppingCartService.addSession(movieSession, alisa);
         ShoppingCart shoppingCartAlisa = shoppingCartService.getByUser(alisa);
         orderService.completeOrder(shoppingCartAlisa.getTickets(),
                 shoppingCartAlisa.getUser());
-        System.out.println(orderService.getOrderHistory(shoppingCartAlisa.getUser()));
+        logger.info(orderService.getOrderHistory(shoppingCartAlisa.getUser()));
     }
 }
