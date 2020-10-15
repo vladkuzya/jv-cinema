@@ -21,7 +21,7 @@ public abstract class AbstractDao<T> {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert " + clazz.getSimpleName() + " to DB"
-                    + entity.toString(), e);
+                    + entity, e);
         } finally {
             if (session != null) {
                 session.close();
