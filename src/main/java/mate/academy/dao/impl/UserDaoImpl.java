@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exceptions.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -27,8 +28,8 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            logger.error("Cant fetch User by email={} from DB", email, e);
-            return Optional.empty();
+            throw new DataProcessingException("Can't find user by email "
+                    + email, e);
         }
     }
 }

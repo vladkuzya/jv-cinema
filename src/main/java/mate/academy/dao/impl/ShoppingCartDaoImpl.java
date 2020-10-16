@@ -1,19 +1,16 @@
 package mate.academy.dao.impl;
 
 import mate.academy.dao.ShoppingCartDao;
+import mate.academy.exceptions.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Dao
 public class ShoppingCartDaoImpl extends AbstractDao<ShoppingCart> implements ShoppingCartDao {
-    private static final Logger logger = LoggerFactory.getLogger(ShoppingCartDaoImpl.class);
-
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         return super.add(shoppingCart, ShoppingCart.class);
@@ -28,8 +25,8 @@ public class ShoppingCartDaoImpl extends AbstractDao<ShoppingCart> implements Sh
             query.setParameter("user", user);
             return query.getSingleResult();
         } catch (Exception e) {
-            logger.error("Can't get Shopping cart by user={} from DB", user, e);
-            return new ShoppingCart();
+            throw new DataProcessingException("Cant get shopping cart by user "
+                    + user, e);
         }
     }
 

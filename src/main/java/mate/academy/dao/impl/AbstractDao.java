@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.Collections;
 import java.util.List;
 import mate.academy.exceptions.DataProcessingException;
 import mate.academy.util.HibernateUtil;
@@ -39,8 +38,8 @@ public abstract class AbstractDao<T> {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from " + clazz.getSimpleName(), clazz).getResultList();
         } catch (Exception e) {
-            logger.error("Cant fetch all {} from DB", clazz.getName(), e);
-            return Collections.emptyList();
+            throw new DataProcessingException("Error retrieving all "
+                    + clazz.getSimpleName(), e);
         }
     }
 
