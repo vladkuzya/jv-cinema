@@ -8,13 +8,9 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Dao
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
-    private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
-
     @Override
     public User add(User user) {
         return super.add(user, User.class);
