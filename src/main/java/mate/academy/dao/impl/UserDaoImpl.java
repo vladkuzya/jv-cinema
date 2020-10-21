@@ -3,14 +3,18 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exceptions.DataProcessingException;
-import mate.academy.lib.Dao;
 import mate.academy.model.User;
-import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
+    public UserDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
+
     @Override
     public User add(User user) {
         return super.add(user, User.class);
@@ -18,7 +22,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User "
                             + "WHERE email = :email", User.class);
             query.setParameter("email", email);

@@ -2,8 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.config.AppConfig;
 import mate.academy.exceptions.AuthenticationException;
-import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
@@ -16,26 +16,27 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.OrderService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
-    private static Injector injector = Injector.getInstance("mate.academy");
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
-    private static MovieService movieService =
-            (MovieService) injector.getInstance(MovieService.class);
-    private static CinemaHallService cinemaHallService =
-            (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private static UserService userService =
-            (UserService) injector.getInstance(UserService.class);
+    private static final Logger logger = Logger.getLogger(Main.class);
+    private static final AnnotationConfigApplicationContext context =
+            new AnnotationConfigApplicationContext(AppConfig.class);
+    private static final CinemaHallService cinemaHallService =
+            context.getBean(CinemaHallService.class);
+    private static final MovieService movieService =
+            context.getBean(MovieService.class);
     private static final MovieSessionService movieSessionService =
-            (MovieSessionService) injector.getInstance(MovieSessionService.class);
-    private static ShoppingCartService shoppingCartService =
-            (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
-    private static AuthenticationService authenticationService =
-            (AuthenticationService) injector.getInstance(AuthenticationService.class);
-    private static OrderService orderService =
-            (OrderService) injector.getInstance(OrderService.class);
+            context.getBean(MovieSessionService.class);
+    private static final OrderService orderService =
+            context.getBean(OrderService.class);
+    private static final ShoppingCartService shoppingCartService =
+            context.getBean(ShoppingCartService.class);
+    private static final UserService userService =
+            context.getBean(UserService.class);
+    private static final AuthenticationService authenticationService =
+            context.getBean(AuthenticationService.class);
 
     public static void main(String[] args) {
         Movie movie = new Movie();
