@@ -17,16 +17,18 @@ public class MovieSessionDaoImpl extends AbstractDao<MovieSession> implements Mo
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<MovieSession> query = session.createQuery("FROM MovieSession "
-                    + "WHERE movie.id = :movieId AND showTime BETWEEN :startDate AND :endDate",
+                            + "WHERE movie.id = :movieId AND "
+                            + "showTime BETWEEN :startDate AND :endDate",
                     MovieSession.class);
             query.setParameter("movieId", movieId);
             query.setParameter("startDate", date.atStartOfDay());
             query.setParameter("endDate", date.atTime(LocalTime.MAX));
             return query.getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find available sessions at this date"
-                    + "for movie with id" + movieId, e);
+            throw new DataProcessingException("Can't find available sessions at this date "
+                    + "for movie with id " + movieId, e);
         }
+
     }
 
     @Override

@@ -25,8 +25,8 @@ public class ShoppingCartDaoImpl extends AbstractDao<ShoppingCart> implements Sh
             query.setParameter("user", user);
             return query.getSingleResult();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find shopping cart"
-                    + "for user with id" + user.getId(), e);
+            throw new DataProcessingException("Cant get shopping cart by user "
+                    + user, e);
         }
     }
 
