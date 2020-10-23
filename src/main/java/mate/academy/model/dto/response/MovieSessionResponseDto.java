@@ -2,6 +2,7 @@ package mate.academy.model.dto.response;
 
 public class MovieSessionResponseDto {
     private Long id;
+    private Long movieId;
     private String movieTitle;
     private Long cinemaHallId;
     private String showTime;
@@ -12,6 +13,14 @@ public class MovieSessionResponseDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Long movieId) {
+        this.movieId = movieId;
     }
 
     public String getMovieTitle() {
