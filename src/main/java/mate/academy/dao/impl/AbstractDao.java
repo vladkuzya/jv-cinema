@@ -2,20 +2,27 @@ package mate.academy.dao.impl;
 
 import java.util.List;
 import mate.academy.exceptions.DataProcessingException;
-import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public abstract class AbstractDao<T> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractDao.class);
+    protected final SessionFactory sessionFactory;
+
+    public AbstractDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public T add(T entity, Class<T> clazz) {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(entity);
             transaction.commit();
@@ -35,7 +42,7 @@ public abstract class AbstractDao<T> {
     }
 
     public List<T> getAll(Class<T> clazz) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from " + clazz.getSimpleName(), clazz).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving all "
@@ -47,7 +54,7 @@ public abstract class AbstractDao<T> {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.merge(entity);
             transaction.commit();

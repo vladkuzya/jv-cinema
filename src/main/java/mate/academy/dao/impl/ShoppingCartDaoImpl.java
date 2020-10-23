@@ -2,15 +2,19 @@ package mate.academy.dao.impl;
 
 import mate.academy.dao.ShoppingCartDao;
 import mate.academy.exceptions.DataProcessingException;
-import mate.academy.lib.Dao;
 import mate.academy.model.ShoppingCart;
 import mate.academy.model.User;
-import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class ShoppingCartDaoImpl extends AbstractDao<ShoppingCart> implements ShoppingCartDao {
+    public ShoppingCartDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
+
     @Override
     public ShoppingCart add(ShoppingCart shoppingCart) {
         return super.add(shoppingCart, ShoppingCart.class);
@@ -18,7 +22,7 @@ public class ShoppingCartDaoImpl extends AbstractDao<ShoppingCart> implements Sh
 
     @Override
     public ShoppingCart getByUser(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<ShoppingCart> query = session.createQuery("FROM ShoppingCart sc "
                     + "LEFT JOIN FETCH sc.tickets "
                     + "WHERE sc.user = :user ", ShoppingCart.class);

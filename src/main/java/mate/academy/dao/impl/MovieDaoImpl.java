@@ -2,11 +2,16 @@ package mate.academy.dao.impl;
 
 import java.util.List;
 import mate.academy.dao.MovieDao;
-import mate.academy.lib.Dao;
 import mate.academy.model.Movie;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
-@Dao
+@Repository
 public class MovieDaoImpl extends AbstractDao<Movie> implements MovieDao {
+    public MovieDaoImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
+    }
+
     @Override
     public Movie add(Movie movie) {
         return super.add(movie, Movie.class);
