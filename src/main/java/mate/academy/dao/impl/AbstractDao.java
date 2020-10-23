@@ -41,6 +41,17 @@ public abstract class AbstractDao<T> {
         }
     }
 
+    public T getById(Long id, Class<T> clazz) {
+        logger.info("Try to get " + clazz.getSimpleName()
+                + " entity with id " + id);
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(clazz, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get " + clazz.getSimpleName()
+                    + " entity with id " + id, e);
+        }
+    }
+
     public List<T> getAll(Class<T> clazz) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from " + clazz.getSimpleName(), clazz).getResultList();
