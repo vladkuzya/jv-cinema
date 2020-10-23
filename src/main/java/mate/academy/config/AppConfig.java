@@ -15,7 +15,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 @ComponentScan(basePackages = {
         "mate.academy.service",
         "mate.academy.dao",
-        "mate.academy.security"
+        "mate.academy.security",
+        "mate.academy.model.dto"
 })
 public class AppConfig {
     private final Environment environment;
