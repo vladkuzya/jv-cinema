@@ -36,6 +36,15 @@ public class MovieSessionDaoImpl extends AbstractDao<MovieSession> implements Mo
     }
 
     @Override
+    public MovieSession getById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(MovieSession.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get Movie session entity with id " + id, e);
+        }
+    }
+
+    @Override
     public MovieSession add(MovieSession movieSession) {
         return super.add(movieSession, MovieSession.class);
     }

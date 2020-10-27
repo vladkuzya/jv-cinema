@@ -32,4 +32,13 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                     + email, e);
         }
     }
+
+    @Override
+    public User getById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(User.class, id);
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get User entity with id " + id, e);
+        }
+    }
 }
