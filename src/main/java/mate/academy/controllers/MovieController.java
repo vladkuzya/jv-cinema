@@ -6,7 +6,11 @@ import mate.academy.model.dto.request.MovieRequestDto;
 import mate.academy.model.dto.response.MovieResponseDto;
 import mate.academy.service.MovieService;
 import mate.academy.service.mapper.MovieMapper;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/movies")
