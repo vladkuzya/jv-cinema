@@ -1,6 +1,9 @@
 package mate.academy.model.dto.request;
 
+import javax.validation.constraints.NotNull;
+
 public class MovieRequestDto {
+    @NotNull
     private String title;
     private String description;
 
