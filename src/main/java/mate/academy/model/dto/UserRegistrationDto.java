@@ -16,6 +16,8 @@ public class UserRegistrationDto {
     @NotNull
     @Size(min = 4)
     private String password;
+    @NotNull
+    @Size(min = 4)
     private String repeatPassword;
 
     public String getEmail() {
