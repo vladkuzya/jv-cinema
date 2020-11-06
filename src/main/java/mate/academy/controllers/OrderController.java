@@ -2,16 +2,17 @@ package mate.academy.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.model.dto.response.OrderResponseDto;
 import mate.academy.service.OrderService;
 import mate.academy.service.ShoppingCartService;
 import mate.academy.service.UserService;
 import mate.academy.service.mapper.OrderMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,15 +34,16 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void completeOrder(@RequestParam String email) {
-        ShoppingCart shoppingCart =
-                shoppingCartService.getByUser(userService.findByEmail(email).get());
-        orderService.completeOrder(shoppingCart.getTickets(), shoppingCart.getUser());
+    public void completeOrder(Authentication authentication) {
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+        User user = userService.findByEmail(userEmail).get();
+        orderService.completeOrder(shoppingCartService.getByUser(user).getTickets(), user);
     }
 
     @GetMapping
-    public List<OrderResponseDto> getOrderHistoryByUser(@RequestParam Long userId) {
-        return orderService.getOrderHistory(userService.getById(userId)).stream()
+    public List<OrderResponseDto> getOrderHistoryByUser(Authentication authentication) {
+        String userEmail = ((UserDetails) authentication.getPrincipal()).getUsername();
+        return orderService.getOrderHistory(userService.findByEmail(userEmail).get()).stream()
                 .map(orderMapper::mapToDto)
                 .collect(Collectors.toList());
     }
